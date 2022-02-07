@@ -11,3 +11,5 @@ Description: More details about what the package does. See
 License: GPL (>= 2)
 Encoding: UTF-8
 RoxygenNote: 7.1.2
+URL: https://github.com/D-Se/ergo
+BugReports: https://github.com/D-Se/ergo/issues
