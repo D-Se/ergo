@@ -1,13 +1,11 @@
 Package: ergo
 Type: Package
-Title: What the Package Does Using Title Case
+Title: Opiniated ergonomics of base R
 Version: 1.0
 Date: 2022-02-08
-Author: Your Name
-Maintainer: Your Name <your@email.com>
-Description: More details about what the package does. See
-       <http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file>
-       for details on how to write this part.
+Author: Donald Seinen
+Maintainer: Donald Seinen <2869830202@qq.com>
+Description: Type less
 License: GPL (>= 2)
 Encoding: UTF-8
 RoxygenNote: 7.1.2
