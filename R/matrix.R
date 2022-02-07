@@ -86,4 +86,14 @@ cmean <- function (x, na.rm = FALSE, dims = 1L) {
   z
 }
 
+#' @export
+rnms <- rownames
 
+#' @export
+`rnms<-` <- `rownames<-`
+
+#' @export
+cnms <- colnames
+
+#' @export
+`cnms<-` <- `colnames<-`
