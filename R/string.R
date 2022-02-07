@@ -98,3 +98,7 @@ mind <- function (x, pattern, ignore.case = FALSE, perl = FALSE, fixed = FALSE,
   }
 }
 
+#' @export
+p0 <- function (..., collapse = "", recycle0 = FALSE) {
+  .Internal(paste0(list(...), collapse, recycle0))
+}

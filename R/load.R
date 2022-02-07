@@ -1,3 +1,6 @@
+#' abbreviations of common tidyverse nouns for quick prototyping
+#' 
+#' @keywords internal
 load_tv <- function(){
   expression(
     box::use(
@@ -8,10 +11,8 @@ load_tv <- function(){
         sw = starts_with, ew = ends_with
       ],
       rlang[`!!`, `!!!`,
-            enquo,
-            enquos,
-            sym,
-            syms]
+            enquo, enquos, sym, syms
+      ]
     )
   )
 }
