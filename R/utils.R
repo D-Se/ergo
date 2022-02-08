@@ -3,7 +3,9 @@ full <- function(x, ind) {
   switch(substring(x, ind),
          "dfr" = "data.frame",
          "int" = "integer", "chr" = "character", "num" = "numeric",
-         "lgl" = "logical", "lst" = "list", "mtx" = "matrix",
+         "lgl" = "logical", "fct" = "factor", "sym" = "symbol",
+         "lst" = "list", "mtx" = "matrix", "arr" = "array", "dbl" = "double",
+         "fun" = "function", "vec" = "vector",
          stop("invalid atomic type"))
 }
 

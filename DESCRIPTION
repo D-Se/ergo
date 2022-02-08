@@ -15,3 +15,5 @@ Suggests:
     box,
     future,
     vroom
+Imports: 
+    stringi

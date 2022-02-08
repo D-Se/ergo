@@ -1,19 +1,11 @@
 #' @export
-lap <- function (x, fun, ..., parallel = FALSE) {
-  if(parallel) return(future.apply::future_lapply(x, fun, ...))
-  fun <- match.fun(fun)
-  if (!is.vector(x) || is.object(x)) 
-    x <- as.list(x)
-  .Internal(lapply(x, fun))
+lap <- function (x, fun, ...) {
+  lapply(x, fun, ...)
 }
 
 #' @export
-vap <- function (x, fun, fun_value, ...,
-                 use_names = TRUE, parallel = FALSE) {
-  if(parallel) return(future.apply::future_vapply(x, fun, fun_value, ...))
-  fun <- match.fun(fun)
-  if (!is.vector(x) || is.object(x)) x <- as.list(x)
-  .Internal(vapply(x, fun, fun_value, use_names))
+vap <- function (x, fun, fun_value, ..., use_names = TRUE) {
+  vapply(x, fun, fun_value, ...)
 }
 
 #' @export
