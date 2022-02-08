@@ -3,6 +3,7 @@
 export("%nin%")
 export("%||%")
 export(":=")
+export("?")
 export("cnms<-")
 export("rnms<-")
 export(arr)

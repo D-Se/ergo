@@ -1,11 +1,27 @@
+#' @keywords internal
+complete <- function(x){
+  switch(x,
+         "dfr" = "data.frame",
+         "int" = "integer",
+         "chr" = "character",
+         "num" = "numeric",
+         "lgl" = "logical",
+         "lst" = "list",
+         "mtx" = "matrix",
+         stop("invalid atomic type")
+  )
+}
+
+
+
+
+
+
+
+
+
 #' @export
 seed <- set.seed
-
-#' @export
-`%||%` <- function(x, y) if(is.null(x)) y else x
-
-#' @export
-`%nin%` <- Negate(`%in%`)
 
 #' @export
 lib <- function(...) {
