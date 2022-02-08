@@ -1,15 +1,10 @@
 #' @keywords internal
-complete <- function(x){
-  switch(x,
+full <- function(x, ind) {
+  switch(substring(x, ind),
          "dfr" = "data.frame",
-         "int" = "integer",
-         "chr" = "character",
-         "num" = "numeric",
-         "lgl" = "logical",
-         "lst" = "list",
-         "mtx" = "matrix",
-         stop("invalid atomic type")
-  )
+         "int" = "integer", "chr" = "character", "num" = "numeric",
+         "lgl" = "logical", "lst" = "list", "mtx" = "matrix",
+         stop("invalid atomic type"))
 }
 
 
@@ -18,6 +13,10 @@ complete <- function(x){
 
 
 
+
+# sub <- substitute
+
+# dep <- deparse
 
 
 #' @export

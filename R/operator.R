@@ -13,7 +13,13 @@
 `%nin%` <- Negate(`%in%`)
 
 
-#' binary ? can now used for typechecking in control flow
+#' binary ? can now used for type checking in control flow
+#' 
+#' @description 
+#' The package?packagename functionality is dropped in favor of concise
+#' type checking. The ? occupies valuable real estate on the keyboard, and is
+#' given high operator precedence in R. It can then be used to make chain actions
+#' that make code much more concise yet humanly readable.
 #' 
 #' @export
 #' @examples 
@@ -26,40 +32,37 @@
 #' if(x?chr) (x?~int) else x
 #' }
 `?` <- function(x, y){
-  if(sum(missing(x), missing(y)) == 0){
+  if(sum(missing(x), missing(y)) == 0) {
     y = deparse(substitute(y))
-    string <- if(startsWith(y, "~")){
-      p0("as.", complete(substring(y, 2)), "(x)")
-    } else{
-      p0("is.", complete(substring(y, 1)), "(x)")
-    }
-    eval(str2expression(string))
+    (if(startsWith(y, "~")) {
+      p0("as.", full(y, 2L), "(x)")
+    } else {
+      p0("is.", full(y, 1L), "(x)")
+    }) |> str2expression() |> eval()
   } else {
-    #type <- NULL
     expr <- substitute(x)
-    search <- (is.call(expr) && expr[[1L]] == "?")
+    search <- is.call(expr) && expr[[1L]] == "?"
     if (is.call(expr) && (expr[[1L]] == "::" || expr[[1L]] == ":::")) {
-      package <- as.character(expr[[2L]])
+      package <- expr[[2L]] ?~ chr
       expr <- expr[[3L]]
     } else {
       package <- NULL
     }
-    if (search) {
-      return(eval(substitute(help.search(TOPIC, package = PACKAGE),
-                             list(TOPIC = as.character(expr), PACKAGE = package))))
-    } else {
-        if (is.call(expr))
-          return(.helpForCall(expr, parent.frame()))
-        topic <- if (is.name(expr))
-          as.character(expr)
-        else x
-        return(eval(substitute(help(TOPIC, package = PACKAGE),
-                               list(TOPIC = topic, PACKAGE = package))))
+    if (search) { # double ??, i.e ??tryCatch parsed as  `?`(`?`(tryCatch))
+      eval(substitute(help.search(TOPIC, package = PACKAGE),
+                             list(TOPIC = as.character(expr)[2], PACKAGE = package)))
+    } else { # unary ? path, i.e ?sum
+        if (is.call(expr)) return(.helpForCall(expr, parent.frame()))
+        topic <- if (is.name(expr)) (expr ?~ chr) else x
+        eval(substitute(help(TOPIC, package = PACKAGE),
+                               list(TOPIC = topic, PACKAGE = package)))
     }
   }
 }
 
-# 
+
+# ?sum
+
 # `%!%` <- function(x, y) {
 #   y = deparse(substitute(y))
 #   p0("as.", complete(y), "(x)") |>

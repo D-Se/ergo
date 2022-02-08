@@ -2,12 +2,15 @@
 % Please edit documentation in R/operator.R
 \name{?}
 \alias{?}
-\title{binary ? can now used for typechecking in control flow}
+\title{binary ? can now used for type checking in control flow}
 \usage{
 `?`(x, y)
 }
 \description{
-binary ? can now used for typechecking in control flow
+The package?packagename functionality is dropped in favor of concise
+type checking. The ? occupies valuable real estate on the keyboard, and is
+given high operator precedence in R. It can then be used to make chain actions
+that make code much more concise yet humanly readable.
 }
 \examples{
 \dontrun{
