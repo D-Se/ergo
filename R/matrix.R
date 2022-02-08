@@ -1,99 +1,49 @@
+#' rowSums, but consistent with terminology
+#' 
+#' @inheritParams base::rowSums
 #' @export
 rsum <- function (x, na.rm = FALSE, dims = 1L) {
-  if (is.data.frame(x)) 
-    x <- as.matrix(x)
-  if (!is.array(x) || length(dn <- dim(x)) < 2L) 
-    stop("'x' must be an array of at least two dimensions")
-  if (dims < 1L || dims > length(dn) - 1L) 
-    stop("invalid 'dims'")
-  p <- prod(dn[-(id <- seq_len(dims))])
-  dn <- dn[id]
-  z <- if (is.complex(x)) 
-    .Internal(rowSums(Re(x), prod(dn), p, na.rm)) + (0+1i) * 
-    .Internal(rowSums(Im(x), prod(dn), p, na.rm))
-  else .Internal(rowSums(x, prod(dn), p, na.rm))
-  if (length(dn) > 1L) {
-    dim(z) <- dn
-    dimnames(z) <- dimnames(x)[id]
-  }
-  else names(z) <- dimnames(x)[[1L]]
-  z
+  rowSums(x = x, na.rm = na.rm, dims = dims)
 }
 
+#' rowMeans, but consistent with terminology
+#'
+#' @inheritParams base::rowMeans
 #' @export
 rmean <- function (x, na.rm = FALSE, dims = 1L) {
-  if (is.data.frame(x)) 
-    x <- as.matrix(x)
-  if (!is.array(x) || length(dn <- dim(x)) < 2L) 
-    stop("'x' must be an array of at least two dimensions")
-  if (dims < 1L || dims > length(dn) - 1L) 
-    stop("invalid 'dims'")
-  p <- prod(dn[-(id <- seq_len(dims))])
-  dn <- dn[id]
-  z <- if (is.complex(x)) 
-    .Internal(rowMeans(Re(x), prod(dn), p, na.rm)) + (0+1i) * 
-    .Internal(rowMeans(Im(x), prod(dn), p, na.rm))
-  else .Internal(rowMeans(x, prod(dn), p, na.rm))
-  if (length(dn) > 1L) {
-    dim(z) <- dn
-    dimnames(z) <- dimnames(x)[id]
-  }
-  else names(z) <- dimnames(x)[[1L]]
-  z
+  rowMeans(x = x, na.rm = na.rm, dims = dims)
 }
 
+#' cowSums, but consistent with terminology
+#'
+#' @inheritParams base::colSums
 #' @export
 csum <- function (x, na.rm = FALSE, dims = 1L) {
-  if (is.data.frame(x)) 
-    x <- as.matrix(x)
-  if (!is.array(x) || length(dn <- dim(x)) < 2L) 
-    stop("'x' must be an array of at least two dimensions")
-  if (dims < 1L || dims > length(dn) - 1L) 
-    stop("invalid 'dims'")
-  n <- prod(dn[id <- seq_len(dims)])
-  dn <- dn[-id]
-  z <- if (is.complex(x)) 
-    .Internal(colSums(Re(x), n, prod(dn), na.rm)) + (0+1i) * 
-    .Internal(colSums(Im(x), n, prod(dn), na.rm))
-  else .Internal(colSums(x, n, prod(dn), na.rm))
-  if (length(dn) > 1L) {
-    dim(z) <- dn
-    dimnames(z) <- dimnames(x)[-id]
-  }
-  else names(z) <- dimnames(x)[[dims + 1L]]
-  z
+  colSums(x = x, na.rm = na.rm, dims = dims)
 }
 
+#' colMeans, but consistent with terminology
+#' 
+#' @inheritParams base::colMeans
 #' @export
 cmean <- function (x, na.rm = FALSE, dims = 1L) {
-  if (is.data.frame(x)) 
-    x <- as.matrix(x)
-  if (!is.array(x) || length(dn <- dim(x)) < 2L) 
-    stop("'x' must be an array of at least two dimensions")
-  if (dims < 1L || dims > length(dn) - 1L) 
-    stop("invalid 'dims'")
-  n <- prod(dn[id <- seq_len(dims)])
-  dn <- dn[-id]
-  z <- if (is.complex(x)) 
-    .Internal(colMeans(Re(x), n, prod(dn), na.rm)) + (0+1i) * 
-    .Internal(colMeans(Im(x), n, prod(dn), na.rm))
-  else .Internal(colMeans(x, n, prod(dn), na.rm))
-  if (length(dn) > 1L) {
-    dim(z) <- dn
-    dimnames(z) <- dimnames(x)[-id]
-  }
-  else names(z) <- dimnames(x)[[dims + 1L]]
-  z
+  colMeans(x = x, na.rm = na.rm, dims = dims)
 }
 
+#' rownames, but consistent with terminology
+#' 
+#' @inheritParams base::rownames
+#' @param do_NULL logical. If FALSE and names are NULL, names are created.
 #' @export
-rnms <- rownames
+rnms <- function(x, do_NULL = TRUE, prefix = "row") {
+  rownames(x = x, do.NULL = do_NULL, prefix = prefix)
+}
 
+#' colnames, but consistent with terminology
+#' 
+#' @inheritParams base::colnames
+#' @param do_NULL logical. If FALSE and names are NULL, names are created.
 #' @export
-`rnms<-` <- `rownames<-`
-
-#' @export
-cnms <- colnames
-
-#' @export
-`cnms<-` <- `colnames<-`
+cnms <- function(x, do_NULL = TRUE, prefix = "col") {
+  rownames(x = x, do.NULL = do_NULL, prefix = prefix)
+}

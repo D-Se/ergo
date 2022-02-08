@@ -1,8 +1,6 @@
-#' @export
-expand <- expand.grid
-
 #' detailed run length encoding in data.frame format
 #' 
+#' @param x An atomic vector
 #' @export
 rlen <- function (x) {
   if (!is.vector(x) && !is.list(x)) stop("'x' must be a vector of an atomic type")
@@ -20,6 +18,8 @@ rlen <- function (x) {
 }
 
 #' rapid tidyverse prototyping
+#' 
+#' @param expr an expression.
 #' 
 #' @export
 #' @examples

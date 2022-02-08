@@ -5,7 +5,7 @@ Version: 1.0
 Date: 2022-02-08
 Author: Donald Seinen
 Maintainer: Donald Seinen <2869830202@qq.com>
-Description: Type less
+Description: Type less.
 License: GPL (>= 2)
 Encoding: UTF-8
 RoxygenNote: 7.1.2
@@ -16,4 +16,6 @@ Suggests:
     future,
     vroom
 Imports: 
-    stringi
+    utils,
+    stringi,
+    methods

@@ -6,6 +6,9 @@
 \usage{
 tv(expr)
 }
+\arguments{
+\item{expr}{an expression.}
+}
 \description{
 rapid tidyverse prototyping
 }

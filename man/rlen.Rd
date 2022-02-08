@@ -6,6 +6,9 @@
 \usage{
 rlen(x)
 }
+\arguments{
+\item{x}{An atomic vector}
+}
 \description{
 detailed run length encoding in data.frame format
 }

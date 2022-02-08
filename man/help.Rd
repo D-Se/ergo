@@ -6,6 +6,14 @@
 \usage{
 `?`(x, y)
 }
+\arguments{
+\item{x}{scalar, vector, name or call.}
+
+\item{y}{scalar or vector.}
+}
+\value{
+If conditional input, a vector or scalar. If help is sought, silent.
+}
 \description{
 The package?packagename functionality is dropped in favor of concise
 type checking. The ? occupies valuable real estate on the keyboard, and is
