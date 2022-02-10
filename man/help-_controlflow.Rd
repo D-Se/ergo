@@ -4,12 +4,10 @@
 \alias{?_controlflow}
 \title{Control flow component for ? operator}
 \usage{
-`?_controlflow`(x, y)
+`?_controlflow`(...)
 }
 \arguments{
-\item{x}{a logical vector or scalar.}
-
-\item{y}{a vector, scalar or compound expression using :.}
+\item{...}{conditions}
 }
 \description{
 Control flow component for ? operator

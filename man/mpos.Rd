@@ -40,7 +40,7 @@ mpos(
 \item{fixed}{logical.  If \code{TRUE}, \code{pattern} is a string to be
     matched as is.  Overrides all conflicting arguments.}
 
-\item{use_bytes}{should bytes be used?}
+\item{use_bytes}{logical. If TRUE the matching is done byte-by-byte rather than character-by-character, and inputs with marked encodings are not converted.}
 
 \item{invert}{logical.  If \code{TRUE} return indices or values for
     elements that do \emph{not} match.}

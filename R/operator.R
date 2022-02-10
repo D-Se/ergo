@@ -18,10 +18,9 @@
 #' given high operator precedence in R. It can then be used to make chain actions
 #' that make code much more concise yet humanly readable.
 #' 
-#' @param x scalar, vector, name or call.
-#' @param y scalar or vector.
+#' @param ... conditions
 #' 
-#' @export
+##' export
 #' @return If conditional input, a vector or scalar. If help is sought, silent.
 #' @examples 
 #' \dontrun{
@@ -32,57 +31,55 @@
 #' # old: 'if(is.character(x)) as.integer(x) else x
 #' if(x?chr) (x?~int) else x
 #' }
-`?` <- function(x, y){
-  if(!xor(missing(x), missing(y))) {
-    y = deparse(substitute(y))
-    `?_controlflow`(x, y)
-  } else { # trimmed help function
-    expr = substitute(x)
-    # substitute(x)[[1]]
+`?` <- function(...){
+  if(...length() > 1){
+    `?_controlflow`(...)
+  } else {
+    expr = substitute(...)
     if (is.call(expr) && (expr[[1L]] == "::" || expr[[1L]] == ":::")) {
       package <- as.character(expr[[2L]])
       expr <- expr[[3L]]
     } else {
       package <- NULL
     }
-    if (is.call(expr) && expr[[1L]] == "?") { # double ??, i.e ??tryCatch parsed as  `?`(`?`(tryCatch))
+    # double ??, i.e ??tryCatch parsed as  `?`(`?`(tryCatch))
+    if (is.call(expr) && expr[[1L]] == "?") {
       eval(substitute(help.search(TOPIC, package = PACKAGE),
                       list(TOPIC = as.character(expr)[2], PACKAGE = package)))
     } else { # unary ? path, i.e ?sum
       #if (is.call(expr)) return(utils:::.helpForCall(expr, parent.frame()))
       if (is.call(expr)) return(helper(expr, parent.frame()))
-      topic <- if (is.name(expr)) (expr ?~ chr) else x
+      topic <- if (is.name(expr)) (expr ?~ chr) else ...
       eval(substitute(help(TOPIC, package = PACKAGE),
                       list(TOPIC = topic, PACKAGE = package)))
     }
-    #x = deparse(substitute(x))
-    #`?_help`(x)
   }
 }
-
+ 
 #' Control flow component for ? operator
 #' 
-#' @param x a logical vector or scalar.
-#' @param y a vector, scalar or compound expression using :.
-`?_controlflow` <- function(x, y) {
-  #if(mlgl(y, ":", fixed = T)) { # ternary operator, i.e. if(x) y else z OR ifelse(x, y, z)
-  if(stringi::stri_detect_fixed(y, ":", max_count = 1L)) {
-    l = strsplit(y, ":", fixed = TRUE)[[1]]
-    if(len(x) > 1) { # vectorized
+#' @param ... conditions
+`?_controlflow` <- function(...) {
+  y = deparse1(..2)
+  if(startsWith(y, "~")) {
+    paste0("as.", full(y, 2L), "(..1)", collapse = "") |>
+      str2expression() |>
+      eval.parent()
+  } else if(stringi::stri_detect_fixed(y, "~", max_count = 1L)) {
+    l = strsplit(y, "~", fixed = TRUE)[[1]]
+    if(length(..1) > 1) { # vectorized
       y1 <- eval(str2expression(l[1]))
       y2 <- eval(str2expression(l[2]))
-      stopifnot("x not a multiple of y" = len(x) %% len(y1) == 0)
-      return(eval.parent(ifelse(x, y1, y2)))
+      return(eval.parent(ifelse(..1, y1, y2)))
     } else { # normal if-else statement
-      return(eval.parent(if(x) str2expression(l[1]) else str2expression(l[2])))
-      }
-  }
-  string <- if(startsWith(y, "~")) {
-    p0("as.", full(y, 2L), "(x)")
+      return(eval.parent(if(..1) str2expression(l[1]) else str2expression(l[2])))
+    }
   } else {
-    p0("is.", full(y, 1L), "(x)")
+    y = deparse(substitute(...())[[2]])
+    paste0("is.", full(y, 1L), "(..1)", collapse = "") |>
+      str2expression() |>
+      eval.parent()
   }
-  eval.parent(str2expression(string))
 }
 
 # `?_help` <- function(x) {

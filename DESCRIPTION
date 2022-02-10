@@ -1,10 +1,15 @@
 Package: ergo
 Type: Package
 Title: Opiniated ergonomics of base R
-Version: 1.0
+Version: 0.0.1
 Date: 2022-02-08
-Author: Donald Seinen
-Maintainer: Donald Seinen <2869830202@qq.com>
+Authors@R: 
+  c(person(given = "Donald",
+             family = "Seinen",
+             role = c("aut", "cre"),
+             email = "2869830202@qq.com",
+             comment = c(ORCID = "0000-0002-4343-5851"))
+  )
 Description: Type less.
 License: GPL (>= 2)
 Encoding: UTF-8
@@ -14,8 +19,11 @@ BugReports: https://github.com/D-Se/ergo/issues
 Suggests: 
     box,
     future,
+    testthat (>= 3.0.0),
     vroom
 Imports: 
     utils,
     stringi,
     methods
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)

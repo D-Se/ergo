@@ -4,12 +4,12 @@
 \alias{?}
 \title{binary ? can now used for type checking in control flow}
 \usage{
-`?`(x, y)
+`?`(...)
 }
 \arguments{
-\item{x}{scalar, vector, name or call.}
+\item{...}{conditions
 
-\item{y}{scalar or vector.}
+export}
 }
 \value{
 If conditional input, a vector or scalar. If help is sought, silent.

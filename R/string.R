@@ -2,7 +2,7 @@
 #' 
 #' @inheritParams base::sub
 #' @param ignore_case should lettercase be ignored?
-#' @param use_bytes should bytes be used?
+#' @param use_bytes logical. If TRUE the matching is done byte-by-byte rather than character-by-character, and inputs with marked encodings are not converted.
 #' @export
 msub <- function (x, pattern, replacement, ignore_case = FALSE, perl = FALSE, 
                  fixed = FALSE, use_bytes = FALSE) {
@@ -14,7 +14,7 @@ msub <- function (x, pattern, replacement, ignore_case = FALSE, perl = FALSE,
 #' 
 #' @inheritParams base::gsub
 #' @param ignore_case should lettercase be ignored?
-#' @param use_bytes should bytes be used?
+#' @param use_bytes logical. If TRUE the matching is done byte-by-byte rather than character-by-character, and inputs with marked encodings are not converted.
 #' @export
 masub <- function (x, pattern, replacement, ignore_case = FALSE, perl = FALSE, 
                   fixed = FALSE, use_bytes = FALSE) {
@@ -26,7 +26,6 @@ masub <- function (x, pattern, replacement, ignore_case = FALSE, perl = FALSE,
 #' 
 #' @inheritParams base::gregexpr
 #' @param ignore_case should lettercase be ignored?
-#' 
 #' @export
 mind <- function (x, pattern, ignore_case = FALSE, perl = FALSE, fixed = FALSE) {
   gregexpr(pattern = pattern, text = x, ignore.case = ignore_case,
@@ -37,8 +36,7 @@ mind <- function (x, pattern, ignore_case = FALSE, perl = FALSE, fixed = FALSE) 
 #' 
 #' @inheritParams base::grepl
 #' @param ignore_case should lettercase be ignored?
-#' @param use_bytes should bytes be used?
-#' 
+#' @param use_bytes logical. If TRUE the matching is done byte-by-byte rather than character-by-character, and inputs with marked encodings are not converted.
 #' @export
 mlgl <- function (x, pattern, ignore_case = FALSE, perl = FALSE, fixed = FALSE, 
                    use_bytes = FALSE) {
@@ -50,8 +48,7 @@ mlgl <- function (x, pattern, ignore_case = FALSE, perl = FALSE, fixed = FALSE,
 #' 
 #' @inheritParams base::grep
 #' @param ignore_case should lettercase be ignored?
-#' @param use_bytes should bytes be used?
-#' 
+#' @param use_bytes logical. If TRUE the matching is done byte-by-byte rather than character-by-character, and inputs with marked encodings are not converted.
 #' @export
 mpos <- function (x, pattern, ignore_case = FALSE, perl = FALSE, value = FALSE,
                   fixed = FALSE, use_bytes = FALSE, invert = FALSE) {
@@ -66,3 +63,22 @@ mpos <- function (x, pattern, ignore_case = FALSE, perl = FALSE, value = FALSE,
 p0 <- function (..., collapse = "", recycle0 = FALSE) {
   paste0(..., collapse = collapse, recycle0 = recycle0)
 }
+
+#' strsplit
+#' 
+#' @inheritParams base::strsplit
+#' @param use_bytes logical. If TRUE the matching is done byte-by-byte rather than character-by-character, and inputs with marked encodings are not converted.
+#' @param unlist logical. Should the result ve a vector?
+#' @export
+chrsplit <- function(x, split = "", unlist = TRUE, fixed = FALSE,
+                     perl = FALSE, use_bytes = FALSE) {
+  if(unlist){
+    ul(strsplit(x = x, split = split, fixed = fixed,
+                perl = perl, useBytes = use_bytes)) 
+  } else {
+    strsplit(x = x, split = split, fixed = fixed,
+             perl = perl, useBytes = use_bytes)
+  }
+}
+
+
