@@ -20,7 +20,7 @@
 #' 
 #' @param ... conditions
 #' 
-##' export
+#' @export
 #' @return If conditional input, a vector or scalar. If help is sought, silent.
 #' @examples 
 #' \dontrun{
@@ -32,75 +32,53 @@
 #' if(x?chr) (x?~int) else x
 #' }
 `?` <- function(...){
-  if(...length() > 1){
-    `?_controlflow`(...)
-  } else {
-    expr = substitute(...)
-    if (is.call(expr) && (expr[[1L]] == "::" || expr[[1L]] == ":::")) {
-      package <- as.character(expr[[2L]])
-      expr <- expr[[3L]]
-    } else {
-      package <- NULL
-    }
-    # double ??, i.e ??tryCatch parsed as  `?`(`?`(tryCatch))
-    if (is.call(expr) && expr[[1L]] == "?") {
-      eval(substitute(help.search(TOPIC, package = PACKAGE),
-                      list(TOPIC = as.character(expr)[2], PACKAGE = package)))
-    } else { # unary ? path, i.e ?sum
-      #if (is.call(expr)) return(utils:::.helpForCall(expr, parent.frame()))
-      if (is.call(expr)) return(helper(expr, parent.frame()))
-      topic <- if (is.name(expr)) (expr ?~ chr) else ...
-      eval(substitute(help(TOPIC, package = PACKAGE),
-                      list(TOPIC = topic, PACKAGE = package)))
-    }
-  }
+  if(...length() > 1L) `?_general_if`(...) else `?_help`(...)
 }
  
 #' Control flow component for ? operator
 #' 
 #' @param ... conditions
-`?_controlflow` <- function(...) {
+`?_general_if` <- function(...) {
+  # ..1 is Boolean, ..2 ..n are expression(s)
   y = deparse1(..2)
-  if(startsWith(y, "~")) {
-    paste0("as.", full(y, 2L), "(..1)", collapse = "") |>
-      str2expression() |>
-      eval.parent()
+  (if(startsWith(y, "~")) {
+    paste0("as.", full(y, 2L), collapse = "")
   } else if(stringi::stri_detect_fixed(y, "~", max_count = 1L)) {
     l = strsplit(y, "~", fixed = TRUE)[[1]]
     if(length(..1) > 1) { # vectorized
-      y1 <- eval(str2expression(l[1]))
-      y2 <- eval(str2expression(l[2]))
-      return(eval.parent(ifelse(..1, y1, y2)))
+      paste0("ifelse(..1,", l[1], ",", l[2], ")")
     } else { # normal if-else statement
-      return(eval.parent(if(..1) str2expression(l[1]) else str2expression(l[2])))
+      if(..1) l[1] else l[2]
     }
   } else {
     y = deparse(substitute(...())[[2]])
-    paste0("is.", full(y, 1L), "(..1)", collapse = "") |>
-      str2expression() |>
-      eval.parent()
-  }
+    paste0("is.", full(y, 1L), collapse = "")
+  }) |>
+    str2expression() |>
+    eval.parent()
 }
 
-# `?_help` <- function(x) {
-#   expr <- deparse(substitute(x))
-#   search <- is.call(expr) && expr[[1L]] == "?"
-#   if (is.call(expr) && (expr[[1L]] == "::" || expr[[1L]] == ":::")) {
-#     package <- as.character(expr[[2L]])
-#     expr <- expr[[3L]]
-#   } else {
-#     package <- NULL
-#   }
-#   if (search) { # double ??, i.e ??tryCatch parsed as  `?`(`?`(tryCatch))
-#     eval(substitute(help.search(TOPIC, package = PACKAGE),
-#                     list(TOPIC = as.character(expr)[2], PACKAGE = package)))
-#   } else { # unary ? path, i.e ?sum
-#     if (is.call(expr)) return(.helpForCall(expr, parent.frame()))
-#     topic <- if (is.name(expr)) (expr ?~ chr) else x
-#     eval(substitute(help(TOPIC, package = PACKAGE),
-#                     list(TOPIC = topic, PACKAGE = package)))
-#   }
-# }
+`?_help` <- function(...) {
+  expr = substitute(...)
+  if (is.call(expr) && (expr[[1L]] == "::" || expr[[1L]] == ":::")) {
+    package <- as.character(expr[[2L]])
+    expr <- expr[[3L]]
+  } else {
+    package <- NULL
+  }
+  # double ??, i.e ??tryCatch parsed as  `?`(`?`(tryCatch))
+  if (is.call(expr) && expr[[1L]] == "?") {
+    eval(substitute(help.search(TOPIC, package = PACKAGE),
+                    list(TOPIC = as.character(expr)[2], PACKAGE = package)), 
+         parent.frame())
+  } else { # unary ? path, i.e ?sum
+    #if (is.call(expr)) return(utils:::.helpForCall(expr, parent.frame()))
+    if (is.call(expr)) return(helper(expr, parent.frame()))
+    topic <- if (is.name(expr)) (expr ?~ chr) else ...
+    eval(substitute(help(TOPIC, package = PACKAGE),
+                    list(TOPIC = topic, PACKAGE = package)), parent.frame())
+  }
+}
 
 #' 
 helper <- function (expr, envir, doEval = TRUE) {

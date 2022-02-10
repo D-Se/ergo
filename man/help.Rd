@@ -7,9 +7,7 @@
 `?`(...)
 }
 \arguments{
-\item{...}{conditions
-
-export}
+\item{...}{conditions}
 }
 \value{
 If conditional input, a vector or scalar. If help is sought, silent.

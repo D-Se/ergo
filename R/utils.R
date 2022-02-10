@@ -1,14 +1,32 @@
 #' Make abbreviations into full nouns.
 #' 
 #' @keywords internal
-full <- function(x, ind) {
-  switch(substring(x, ind),
-         "dfr" = "data.frame",
-         "int" = "integer", "chr" = "character", "num" = "numeric",
-         "lgl" = "logical", "fct" = "factor", "sym" = "symbol",
-         "lst" = "list", "mtx" = "matrix", "arr" = "array", "dbl" = "double",
-         "fun" = "function", "vec" = "vector",
-         stop("invalid atomic type"))
+# full <- function(x, ind) {
+#   switch(substring(x, ind),
+#          "dfr" = "data.frame",
+#          "int" = "integer", "chr" = "character", "num" = "numeric",
+#          "lgl" = "logical", "fct" = "factor", "sym" = "symbol",
+#          "lst" = "list", "mtx" = "matrix", "arr" = "array", "dbl" = "double",
+#          "fun" = "function", "vec" = "vector",
+#          stop("invalid atomic type"))
+# }
+full <- function(x, ind = 0L) {
+  if(ind != 0L) x <- substring(x, ind)
+  s = stringi::stri_detect_regex(x, "\\(", max_count = 1)
+  string = if(s) stringi::stri_extract(x, regex = ".+?(?=\\()") else x
+  out <- switch(string,
+                "dfr" = "data.frame",
+                "int" = "integer", "chr" = "character", "num" = "numeric",
+                "lgl" = "logical", "fct" = "factor", "sym" = "symbol",
+                "lst" = "list", "mtx" = "matrix", "arr" = "array", "dbl" = "double",
+                "fun" = "function", "vec" = "vector",
+                stop("invalid atomic type"))
+  if(s){
+    out <- sub(".+?(?=\\()", out, x, perl = TRUE)
+    sub("((?<=\\().*(?=\\)))", "..1, \\1", out, perl = TRUE)
+  } else {
+    paste0(out, "(..1)", collapse = "")
+  }
 }
 
 # sub <- substitute
