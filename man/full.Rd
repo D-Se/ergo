@@ -4,7 +4,7 @@
 \alias{full}
 \title{Make abbreviations into full nouns.}
 \usage{
-full(x, ind = 0L)
+full(x)
 }
 \description{
 Make abbreviations into full nouns.

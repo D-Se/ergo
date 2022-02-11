@@ -4,10 +4,12 @@
 \alias{:=}
 \title{Ergo protoype kickstarter - wrapper for \code{ergo::tv()}.}
 \usage{
-`:=`(x)
+`:=`(x, y = NULL)
 }
 \arguments{
 \item{x}{an expression.}
+
+\item{y}{void}
 }
 \description{
 Ergo protoype kickstarter - wrapper for \code{ergo::tv()}.

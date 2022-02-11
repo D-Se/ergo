@@ -1,9 +1,10 @@
 #' Ergo protoype kickstarter - wrapper for \code{ergo::tv()}.
 #' 
 #' @param x an expression.
+#' @param y void
 #' 
 #' @export
-`:=` <- function(x) {
+`:=` <- function(x, y = NULL) {
   deparse1(substitute(x)) |>
     p0("|> tv()") |>
     str2expression() |>
@@ -31,32 +32,66 @@
 #' # old: 'if(is.character(x)) as.integer(x) else x
 #' if(x?chr) (x?~int) else x
 #' }
+# `?` <- function(...){
+#   if(...length() > 1L) `?_general_if`(...) else `?_help`(...)
+# }
 `?` <- function(...){
-  if(...length() > 1L) `?_general_if`(...) else `?_help`(...)
+  switch(...length(),
+         `?_help`(...), # regular help for unary ?
+         switch(length(..2),
+                type_check(...), # no ..2 or no formula 5 ? 3
+                type_convert(...), # starts with formula 5 ? ~ 3
+                control_flow(...), # formula in body 5 ? 3 ~ 5, nested 5 ~ 3
+                stop("invalid 1")
+         ),
+         stop("invalid 2")
+  )
 }
+
  
 #' Control flow component for ? operator
 #' 
+#' @param query query
 #' @param ... conditions
-`?_general_if` <- function(...) {
-  # ..1 is Boolean, ..2 ..n are expression(s)
-  y = deparse1(..2)
-  (if(startsWith(y, "~")) {
-    paste0("as.", full(y, 2L), collapse = "")
-  } else if(stringi::stri_detect_fixed(y, "~", max_count = 1L)) {
-    l = strsplit(y, "~", fixed = TRUE)[[1]]
-    if(length(..1) > 1) { # vectorized
-      paste0("ifelse(..1,", l[1], ",", l[2], ")")
-    } else { # normal if-else statement
-      if(..1) l[1] else l[2]
-    }
+# `?_general_if` <- function(...) {
+#   # ..1 is Boolean, ..2 ..n are expression(s)
+#   y = deparse1(..2)
+#   #y = as.character(..2)
+#   (if(startsWith(y, "~")) {
+#     p0("as.", full(substring(y, 2L)))
+#   } else if(stringi::stri_detect_fixed(y, "~", max_count = 1L)) {
+#     l = strsplit(y, "~", fixed = T)[[1]]
+#     if(length(..1) > 1L) {
+#       paste0("ifelse(..1,", l[1], ",", l[2], ")")
+#     } else { # normal if-else statement
+#       if(..1) l[1] else l[2]
+#     }
+#   } else {
+#     y = deparse(substitute(...())[[2]])
+#     p0("is.", full(substring(y, 1L)))
+#   }) |>
+#     str2expression() |>
+#     eval()
+# }
+control_flow <- function(query, ...){
+  if(length(query) > 1L){
+    do.call("ifelse", list(query, ..1[[2]], ..1[[3]]))
   } else {
-    y = deparse(substitute(...())[[2]])
-    paste0("is.", full(y, 1L), collapse = "")
-  }) |>
-    str2expression() |>
-    eval.parent()
+    if(query) ..1[[2]] else ..1[[3]]
+  }
 }
+
+type_check <- function(...){
+  y <- as.character(substitute(...())[[2]])
+  do.call(paste0("is.", full(y), collapse = ""), list(..1)) 
+}
+
+type_convert <- function(...){
+  y <- as.character(..2[[2]])
+  do.call(paste0("as.", full(y), collapse = ""), list(..1))
+}
+
+
 
 `?_help` <- function(...) {
   expr = substitute(...)

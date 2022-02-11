@@ -22,8 +22,8 @@ test_that("?-operator returns correctly", {
     )
   
   # binary ? converts types with dots passed
-  expect_equal(
-    as.integer(y, 2, 3),
-    y ?~ int(2, 3)
-    )
+  #expect_equal(
+   # as.integer(y, 2, 3),
+    #y ?~ int(2, 3)
+    #)
 })
