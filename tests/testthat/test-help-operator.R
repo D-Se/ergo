@@ -26,4 +26,9 @@ test_that("?-operator returns correctly", {
    # as.integer(y, 2, 3),
     #y ?~ int(2, 3)
     #)
+  df <- cbind.data.frame(l = c(letters[1:5], NA), L = c(LETTERS[1:5], NA))
+  expect_equal(
+    df |> transform(new = l %in% c("a", "d", "f") ? 1 ~ {L == "B" ? 2 ~ 3}),
+    df |> transform(new = ifelse(l %in% c("a", "d", "f"), 1, ifelse(L == "B", 2, 3)))
+  )
 })

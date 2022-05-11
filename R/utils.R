@@ -1,48 +1,21 @@
 #' Make abbreviations into full nouns.
 #' 
+#' @param x string from formula in `?`
+#' @param ... dots
 #' @keywords internal
-# full <- function(x, ind) {
-#   switch(substring(x, ind),
-#          "dfr" = "data.frame",
-#          "int" = "integer", "chr" = "character", "num" = "numeric",
-#          "lgl" = "logical", "fct" = "factor", "sym" = "symbol",
-#          "lst" = "list", "mtx" = "matrix", "arr" = "array", "dbl" = "double",
-#          "fun" = "function", "vec" = "vector",
-#          stop("invalid atomic type"))
-# }
-full <- function(x) {
-  #if(ind != 0L) x <- substring(x, ind)
-  #s = stringi::stri_detect_regex(x, "\\(", max_count = 1L)
+full <- function(x, ...) {
   s = endsWith(x, ")")
-  #string = if(s) stringi::stri_extract(x, regex = ".+?(?=\\()") else x
   out <- switch(
     if(s) stringi::stri_extract(x, regex = ".+?(?=\\()") else x,
     "int" = "integer", "chr" = "character", "num" = "numeric",
-    "dfr" = "data.frame", "lst" = "list", "mtx" = "matrix",
-    "lgl" = "logical", "fct" = "factor", "sym" = "symbol",
-    "arr" = "array", "dbl" = "double", "fun" = "function", "vec" = "vector",
+    ..., # Dynamic load library
     stop("invalid atomic type"))
-  if(s){
-    #out <- sub(".+?(?=\\()", out, x, perl = TRUE)
-    #sub("((?<=\\().*(?=\\)))", "..1, \\1", out, perl = TRUE)
+  if(!s) out else {
     stringi::stri_replace_all_regex(x,
-      pattern = c(".+?(?=\\()", "((?<=\\().*(?=\\)))"),
-      replacement = c(out, "..1, $1"), vectorize_all = FALSE)
-  } #else if (dots) {
-    #paste0(out, "(..1)", collapse = "")
-  #} else {
-  else{
-    out
+      c(".+?(?=\\()", "((?<=\\().*(?=\\)))"),
+      c(out, "..1, $1"), FALSE)
   }
 }
-# x <- "mtx(ncol = 3)"
-# 
-# library(stringi)
-# out = "matrix"
-# 
-# stri_replace_all_regex(x,
-#                        pattern = c(".+?(?=\\()", "((?<=\\().*(?=\\)))"),
-#                        replacement = c(out, "..1, $1"), vectorize_all = FALSE)
 
 # sub <- substitute
 

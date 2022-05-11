@@ -4,7 +4,12 @@
 \alias{full}
 \title{Make abbreviations into full nouns.}
 \usage{
-full(x)
+full(x, ...)
+}
+\arguments{
+\item{x}{string from formula in \verb{?}}
+
+\item{...}{dots}
 }
 \description{
 Make abbreviations into full nouns.

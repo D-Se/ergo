@@ -16,7 +16,7 @@ If conditional input, a vector or scalar. If help is sought, silent.
 The package?packagename functionality is dropped in favor of concise
 type checking. The ? occupies valuable real estate on the keyboard, and is
 given high operator precedence in R. It can then be used to make chain actions
-that make code much more concise yet humanly readable.
+that make code concise yet humanly readable.
 }
 \examples{
 \dontrun{

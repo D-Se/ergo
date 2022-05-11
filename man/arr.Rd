@@ -16,7 +16,7 @@ arr(data = NA, dim = length(data), dimnames = NULL)
     each dimension.}
 
 \item{dimnames}{either \code{NULL} or the names for the dimensions.
-    This must a list (or it will be ignored) with one component for each
+    This must be a list (or it will be ignored) with one component for each
     dimension, either \code{NULL} or a character vector of the length
     given by \code{dim} for that dimension.  The list can be named, and
     the list names will be used as names for the dimensions.  If the

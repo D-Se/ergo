@@ -1,3 +1,7 @@
 ^.git$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+ternaryoptimization.R
+help_operator.Rmd
+analysis.R
+helpbenchmark.R

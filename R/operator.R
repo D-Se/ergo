@@ -17,7 +17,7 @@
 #' The package?packagename functionality is dropped in favor of concise
 #' type checking. The ? occupies valuable real estate on the keyboard, and is
 #' given high operator precedence in R. It can then be used to make chain actions
-#' that make code much more concise yet humanly readable.
+#' that make code concise yet humanly readable.
 #' 
 #' @param ... conditions
 #' 
@@ -40,7 +40,7 @@
          `?_help`(...), # regular help for unary ?
          switch(length(..2),
                 type_check(...), # no ..2 or no formula 5 ? 3
-                type_convert(...), # starts with formula 5 ? ~ 3
+                type_convert(...), # ..2 starts with formula 5 ? ~ 3
                 control_flow(...), # formula in body 5 ? 3 ~ 5, nested 5 ~ 3
                 stop("invalid 1")
          ),
@@ -48,34 +48,10 @@
   )
 }
 
- 
-#' Control flow component for ? operator
-#' 
-#' @param query query
-#' @param ... conditions
-# `?_general_if` <- function(...) {
-#   # ..1 is Boolean, ..2 ..n are expression(s)
-#   y = deparse1(..2)
-#   #y = as.character(..2)
-#   (if(startsWith(y, "~")) {
-#     p0("as.", full(substring(y, 2L)))
-#   } else if(stringi::stri_detect_fixed(y, "~", max_count = 1L)) {
-#     l = strsplit(y, "~", fixed = T)[[1]]
-#     if(length(..1) > 1L) {
-#       paste0("ifelse(..1,", l[1], ",", l[2], ")")
-#     } else { # normal if-else statement
-#       if(..1) l[1] else l[2]
-#     }
-#   } else {
-#     y = deparse(substitute(...())[[2]])
-#     p0("is.", full(substring(y, 1L)))
-#   }) |>
-#     str2expression() |>
-#     eval()
-# }
 control_flow <- function(query, ...){
   if(length(query) > 1L){
-    do.call("ifelse", list(query, ..1[[2]], ..1[[3]]))
+    #data.table::fifelse(query, ..1[[2]], ..1[[3]])
+    do.call("ifelse", list(query, ..1[[2]], ..1[[3]]), envir = parent.frame(2))
   } else {
     if(query) ..1[[2]] else ..1[[3]]
   }
@@ -115,7 +91,9 @@ type_convert <- function(...){
   }
 }
 
-#' 
+#' @importFrom methods isGeneric
+#' @importFrom methods getGeneric
+#' @importFrom methods selectMethod
 helper <- function (expr, envir, doEval = TRUE) {
   sigFormat <- function(sigNames, sigClasses) {
     paste(sprintf("%s = \"%s\"", sigNames, sigClasses), 
@@ -180,6 +158,8 @@ try_help <- function (topic, package = NULL) {
   if (inherits(h, "error") || !length(h)) NULL else h
 }
 
+#' @importFrom methods is
+#' @importFrom methods elNamed
 sig_from_call <- function (fdef, expr, envir, doEval = TRUE) {
   args <- formals(fdef)
   call <- match.call(fdef, expr, expand.dots = FALSE)
