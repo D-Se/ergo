@@ -1,3 +1,6 @@
+#' @export
+. <- NULL
+
 #' Ergo protoype kickstarter - wrapper for \code{ergo::tv()}.
 #' 
 #' @param x an expression.
@@ -19,6 +22,9 @@
 #' given high operator precedence in R. It can then be used to make chain actions
 #' that make code concise yet humanly readable.
 #' 
+#' @details 
+#' Base R has as of version 4.2 introuced a hard error for supplying a vector to
+#'a regular if-statement. In \code{ergo} this is instead evaluated as an \code{ifelse}
 #' @param ... conditions
 #' 
 #' @export
@@ -31,10 +37,17 @@
 #' # if x is character, make it an integer
 #' # old: 'if(is.character(x)) as.integer(x) else x
 #' if(x?chr) (x?~int) else x
+#' 
+#' # base R throws an error
+#' 1:4 |> if(sum() > 10) 10 else 5
+#' 
+#' 1:4 |> sum() > 10 ? 10 ~ 5
+#' 
+#' # passing arguments by \code{expr[...]}
+#' e <- list(first = "a", second = F) |> list2env()
+#' as.list(e) ; as.list(e, sorted = TRUE)
+#' e ?~ lst[sorted = TRUE]
 #' }
-# `?` <- function(...){
-#   if(...length() > 1L) `?_general_if`(...) else `?_help`(...)
-# }
 `?` <- function(...){
   switch(...length(),
          `?_help`(...), # regular help for unary ?
@@ -42,18 +55,17 @@
                 type_check(...), # no ..2 or no formula 5 ? 3
                 type_convert(...), # ..2 starts with formula 5 ? ~ 3
                 control_flow(...), # formula in body 5 ? 3 ~ 5, nested 5 ~ 3
-                stop("invalid 1")
+                e("?", "Unsupported format")
          ),
-         stop("invalid 2")
+         e("", "Unsupported format")
   )
 }
 
 control_flow <- function(query, ...){
   if(length(query) > 1L){
-    #data.table::fifelse(query, ..1[[2]], ..1[[3]])
     do.call("ifelse", list(query, ..1[[2]], ..1[[3]]), envir = parent.frame(2))
   } else {
-    if(query) ..1[[2]] else ..1[[3]]
+    eval.parent(if(query) ..1[[2]] else ..1[[3]])
   }
 }
 
@@ -63,11 +75,17 @@ type_check <- function(...){
 }
 
 type_convert <- function(...){
-  y <- as.character(..2[[2]])
-  do.call(paste0("as.", full(y), collapse = ""), list(..1))
+  #browser()
+  # y <- as.character(..2[[2]])
+  if(is.name(..2[[2]])) {
+    y <- as.character(..2[[2]])
+    do.call(paste0("as.", full(y), collapse = ""), list(..1))
+  } else {
+    l = as.list(..2[[2]])
+    y <- as.character(l[[2]])
+    do.call(paste0("as.", full(y), collapse = ""), c(..1, l[-c(1,2)]))
+  }
 }
-
-
 
 `?_help` <- function(...) {
   expr = substitute(...)
@@ -79,14 +97,14 @@ type_convert <- function(...){
   }
   # double ??, i.e ??tryCatch parsed as  `?`(`?`(tryCatch))
   if (is.call(expr) && expr[[1L]] == "?") {
-    eval(substitute(help.search(TOPIC, package = PACKAGE),
+    eval(substitute(utils::help.search(TOPIC, package = PACKAGE),
                     list(TOPIC = as.character(expr)[2], PACKAGE = package)), 
          parent.frame())
   } else { # unary ? path, i.e ?sum
     #if (is.call(expr)) return(utils:::.helpForCall(expr, parent.frame()))
     if (is.call(expr)) return(helper(expr, parent.frame()))
-    topic <- if (is.name(expr)) (expr ?~ chr) else ...
-    eval(substitute(help(TOPIC, package = PACKAGE),
+    topic <- if (is.name(expr)) as.character(expr) else c(...)
+    eval(substitute(utils::help(TOPIC, package = PACKAGE),
                     list(TOPIC = topic, PACKAGE = package)), parent.frame())
   }
 }

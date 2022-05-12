@@ -7,7 +7,11 @@ full <- function(x, ...) {
   s = endsWith(x, ")")
   out <- switch(
     if(s) stringi::stri_extract(x, regex = ".+?(?=\\()") else x,
-    "int" = "integer", "chr" = "character", "num" = "numeric",
+    chr = "character", num = "numeric", int = "integer", 
+    lst = "list", dfr = "data.frame", mtx = "matrix",
+    lgl = "logical", fac = "factor", cmp = "complex",
+    exp = "expression", arr = "array", env = "environment",
+    fun = "function", fml = "formula",
     ..., # Dynamic load library
     stop("invalid atomic type"))
   if(!s) out else {

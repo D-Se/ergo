@@ -2,6 +2,7 @@
 
 export(":=")
 export("?")
+export(.)
 export(arr)
 export(chr)
 export(chrsplit)

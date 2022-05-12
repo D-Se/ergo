@@ -18,6 +18,10 @@ type checking. The ? occupies valuable real estate on the keyboard, and is
 given high operator precedence in R. It can then be used to make chain actions
 that make code concise yet humanly readable.
 }
+\details{
+Base R has as of version 4.2 introuced a hard error for supplying a vector to
+a regular if-statement. In \code{ergo} this is instead evaluated as an \code{ifelse}
+}
 \examples{
 \dontrun{
 x = as.character(1:5)
@@ -26,5 +30,15 @@ x ? chr
 # if x is character, make it an integer
 # old: 'if(is.character(x)) as.integer(x) else x
 if(x?chr) (x?~int) else x
+
+# base R throws an error
+1:4 |> if(sum() > 10) 10 else 5
+
+1:4 |> sum() > 10 ? 10 ~ 5
+
+# passing arguments by \code{expr[...]}
+e <- list(first = "a", second = F) |> list2env()
+as.list(e) ; as.list(e, sorted = TRUE)
+e ?~ lst[sorted = TRUE]
 }
 }
