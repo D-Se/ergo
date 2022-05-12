@@ -3,7 +3,7 @@
 #' @inheritParams base::character
 #' 
 #' @export
-chr <- function(length = 0){
+chr <- function(length = 0) {
   character(length)
 }
 
@@ -11,7 +11,7 @@ chr <- function(length = 0){
 #' 
 #' @inheritParams base::numeric
 #' @export
-num <- function(length = 0){
+num <- function(length = 0) {
   numeric(length)
 }
 
@@ -19,7 +19,7 @@ num <- function(length = 0){
 #' 
 #' @inheritParams base::integer
 #' @export
-int <- function(length = 0){
+int <- function(length = 0) {
   integer(length)
 }
 
@@ -27,16 +27,17 @@ int <- function(length = 0){
 #' 
 #' @inheritParams base::logical
 #' @export
-lgl <- function(length = 0){
+lgl <- function(length = 0) {
   logical(length)
 }
 
 #' Abbreviated scalar
 #' 
 #' @inheritParams base::list
+#' @param names a character vector of list element names
 #' @export
-lst <- function(...){
-  list(...)
+lst <- function(..., names = NULL) {
+  list(...) |> setNames(names)
 }
 
 #' Abbreviated scalar
@@ -72,7 +73,7 @@ dfr <- function(..., row_names = NULL, check_rows = FALSE, check_names = TRUE,
 #' @param by_row logical. If FALSE (the default) the matrix is filled by columns, otherwise the matrix is filled by rows.
 #' @export
 mtx <- function(data = NA, nrow = 1, ncol = 1,
-                by_row = FALSE, dimnames = NULL){
+                by_row = FALSE, dimnames = NULL) {
   matrix(data = data, nrow = nrow, ncol = ncol, byrow = by_row, dimnames = dimnames)
 }
 
@@ -80,7 +81,7 @@ mtx <- function(data = NA, nrow = 1, ncol = 1,
 #' 
 #' @inheritParams base::array
 #' @export
-arr <- function(data = NA, dim = length(data), dimnames = NULL){
+arr <- function(data = NA, dim = length(data), dimnames = NULL) {
   array(data = data, dim = dim, dimnames = dimnames)
 }
 
@@ -88,6 +89,6 @@ arr <- function(data = NA, dim = length(data), dimnames = NULL){
 #' @inheritParams base::vector
 #" 
 #' @export
-vec <- function(mode = "logical", length = 0){
+vec <- function(mode = "logical", length = 0) {
   vector(mode = mode, length = length)
 }

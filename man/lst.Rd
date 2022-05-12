@@ -4,10 +4,12 @@
 \alias{lst}
 \title{Abbreviated scalar}
 \usage{
-lst(...)
+lst(..., names = NULL)
 }
 \arguments{
 \item{...}{objects, possibly named.}
+
+\item{names}{a character vector of list element names}
 }
 \description{
 Abbreviated scalar

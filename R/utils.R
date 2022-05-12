@@ -13,13 +13,41 @@ full <- function(x, ...) {
     exp = "expression", arr = "array", env = "environment",
     fun = "function", fml = "formula",
     ..., # Dynamic load library
-    stop("invalid atomic type"))
+    default = return())
   if(!s) out else {
     stringi::stri_replace_all_regex(x,
       c(".+?(?=\\()", "((?<=\\().*(?=\\)))"),
       c(out, "..1, $1"), FALSE)
   }
 }
+
+#' null-coaslecing operator
+#' @keywords internal
+"%||%" <- function(x, y) if(is.null(x)) y else x
+
+# 
+# type_convert <- function(...){
+#   #browser()
+#   switch(class(..2[[2]]),
+#          name = {
+#            y <- as.character(..2[[2]])
+#            do.call(paste0("as.", full(y), collapse = ""), list(..1))
+#          },
+#          call = {
+#            l = as.list(..2[[2]])
+#            y <- as.character(l[[2]])
+#            if(is.character(..1) & is.character(l[[2]])) {
+#              return(do.call("paste", c(..1, l[-1])))
+#            }
+#            do.call(paste0("as.", full(y), collapse = ""), c(..1, l[-c(1,2)]))
+#          },
+#          character = {
+#            paste0(..1, ..2[[2]])
+#          }
+#   )
+# }
+
+
 
 # sub <- substitute
 
@@ -84,3 +112,18 @@ len <- function(x) {
 nms <- function(x){
   names(x)
 }
+
+
+# shortcut for tidyverse map
+#' @keywords w internal
+.map <- function (.x, .f, ...) {
+  .f <- purrr::as_mapper(.f, ...)
+  .Call(purrr:::map_impl, environment(), ".x", ".f", "list")
+}
+
+# fun <- function(expr) {
+#   function(x = quote(..1), y = quote(..2), ...) eval(expr)
+# }
+# 
+
+

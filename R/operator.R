@@ -70,20 +70,27 @@ control_flow <- function(query, ...){
 }
 
 type_check <- function(...){
+  browser()
   y <- as.character(substitute(...())[[2]])
   do.call(paste0("is.", full(y), collapse = ""), list(..1)) 
 }
 
 type_convert <- function(...){
   #browser()
+  #return(.map(..1, ..2))
+  #return(fun(..2[[2]])(..1))
   # y <- as.character(..2[[2]])
   if(is.name(..2[[2]])) {
     y <- as.character(..2[[2]])
-    do.call(paste0("as.", full(y), collapse = ""), list(..1))
+    y <- full(y)
+    y %||% return(1000)
+    do.call(paste0("as.", y, collapse = ""), list(..1))
   } else {
-    l = as.list(..2[[2]])
+    l <- as.list(..2[[2]])
     y <- as.character(l[[2]])
-    do.call(paste0("as.", full(y), collapse = ""), c(..1, l[-c(1,2)]))
+    y <- full(y)
+    y %||% return(1000)
+    do.call(paste0("as.", y, collapse = ""), c(..1, l[-c(1,2)]))
   }
 }
 

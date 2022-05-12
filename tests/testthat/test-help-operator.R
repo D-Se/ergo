@@ -42,8 +42,8 @@ test_that("?-op converts types correctly", {
   v = 5
   l = list(a = 1, b = 2, "x")
   
-  expect_equal(as.character(v), y ?~ chr)
-  expect_equal(as.numeric(v), y ?~ num)
+  expect_equal(as.character(v), v ?~ chr)
+  expect_equal(as.numeric(v), v ?~ num)
   expect_equal(as.list(v), v ?~ lst)
   expect_equal(as.integer(v), v ?~ int)
   expect_equal(as.matrix(v), v ?~ mtx)

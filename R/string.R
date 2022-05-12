@@ -1,3 +1,4 @@
+
 #' sub but named wrapped for consistency
 #' 
 #' @inheritParams base::sub
@@ -82,3 +83,37 @@ chrsplit <- function(x, split = "", unlist = TRUE, fixed = FALSE,
 }
 
 
+
+# string concatenation
+# `?` <- function(...) switch(...length(), 1, switch(length(..2), 1, f(...), 3))
+# bench::mark(
+#   x = "hello" ?~ "world",
+#   y = "hello" ?~ "world" [sep = " "], 
+#   g = glue::glue("hello", "world"),
+#   g2 = glue::glue("hello", "world", .sep = " "),
+#   z = paste0("hello", "world"),
+#   z2 = paste0("hello", "world", sep = " "),
+#   
+#   check = F
+# )
+# 
+# f <- function(...){
+#   #browser()
+#   switch(class(..2[[2]]),
+#          name = {
+#            # y <- as.character(..2[[2]])
+#            # do.call(paste0("as.", full(y), collapse = ""), list(..1))
+#          },
+#          call = {
+#            l = as.list(..2[[2]])
+#            y <- as.character(l[[2]])
+#            if(is.character(..1) & is.character(l[[2]])) {
+#              return(do.call("paste", c(..1, l[-1])))
+#            }
+#            #do.call(paste0("as.", full(y), collapse = ""), c(..1, l[-c(1,2)]))
+#          },
+#          character = {
+#            paste0(..1, ..2[[2]])
+#          }
+#   )
+# }
