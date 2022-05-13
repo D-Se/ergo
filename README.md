@@ -2,37 +2,40 @@
 # ergo
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/D-Se/ergo/workflows/R-CMD-check/badge.svg)](https://github.com/D-Se/ergo/actions)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 Ergonomic tools for R.
 
 ## Installation
-
-You can install the development version of ergo from [GitHub](https://github.com/) with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("D-Se/ergo")
-```
+At the console, run `r devtools::install_github("D-Se/ergo")`
 
 ## Why `ergo`?
 
-Control flow is a basic component of any programming language. Would be a shame if it requires people to juggle braces, consider vectorization, or in general write more glyphs than needed.
-
-``` r
-if(5 > 3) 10 else 5
-ifelse(1:5 > 3, 10, 5)
-
-#becomes
-5 > 3 ? 10 ~ 5
-1:5 > 3 ? 10 ~ 5
+- minimize hand travel distance
+- maximize recall
 
 
-is.numeric(x)
-x ? num
+### Control flow
+In natural language an important concept is usually easy to express. `ergo` re-purposes the `?` operator and combines it with R's formula `~` interface to reduce glyphs needed.
 
-as.numeric(x)
-x ?~ num
-```
+|                   Base R                  | Tidyverse                                     |             **Ergo**            |
+|:-----------------------------------------:|-----------------------------------------------|:-------------------------------:|
+|           `if(5 > 3) 10 else 5`           | -                                             |         `5 > 3 ? 10 ~ 5`        |
+|          `ifelse(1:5 > 3, 10, 5)`         | `if_else(1:5 > 3, 10, 5)`                     |        `1:5 > 3 ? 10 ~ 5`       |
+| `ifelse(x > 3, 5, ifelse(x > 2, 10, 20))` | `case_when(x > 3 ~ 5, x > 2 ~ 10, TRUE ~ 20)` | `x > 3 ? 5 ~ {x > 2 ? 10 ~ 20}` |
+
+### Type checks
+
+|            Base R           |          **Ergo**          |
+|:---------------------------:|:--------------------------:|
+|      `is.numeric("5")`      |        `"5" ? num`         |
+
+### Type conversion
+
+|            Base R           |          **Ergo**          |
+|:---------------------------:|:--------------------------:|
+|      `as.numeric("5")`      |        `"5" ?~ num`        |
+| `as.list(e, sorted = TRUE)` | `e ?~ lst [sorted = TRUE]` |
 

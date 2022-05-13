@@ -57,11 +57,12 @@
                 control_flow(...), # formula in body 5 ? 3 ~ 5, nested 5 ~ 3
                 e("?", "Unsupported format")
          ),
-         e("", "Unsupported format")
+         e("?", "Unsupported format")
   )
 }
 
 control_flow <- function(query, ...){
+  #browser()
   if(length(query) > 1L){
     do.call("ifelse", list(query, ..1[[2]], ..1[[3]]), envir = parent.frame(2))
   } else {
@@ -70,7 +71,7 @@ control_flow <- function(query, ...){
 }
 
 type_check <- function(...){
-  browser()
+  #browser()
   y <- as.character(substitute(...())[[2]])
   do.call(paste0("is.", full(y), collapse = ""), list(..1)) 
 }
