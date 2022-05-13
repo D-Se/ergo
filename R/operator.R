@@ -1,36 +1,67 @@
-#' @export
-. <- NULL
+# #' Null-coalescing operator
+# #' 
+# #' Convenience operator to transform \code{NULL} values into something useful.
+# #' 
+# #' @param x,y an object \code{x} and replacement \code{y}.
+# #' @return \code{y} if \code{x} is \code{NULL} else \code{x}.
+# `%||%` <- function(x, y) {
+#  if(is.null(x)) y else x
+#}
 
-#' Ergo protoype kickstarter - wrapper for \code{ergo::tv()}.
-#' 
-#' @param x an expression.
-#' @param y void
-#' 
-#' @export
-`:=` <- function(x, y = NULL) {
-  deparse1(substitute(x)) |>
-    p0("|> tv()") |>
-    str2expression() |>
-    eval(envir = globalenv())
-}
-
-#' binary ? can now used for type checking in control flow
+#' Query operator \code{?}
 #' 
 #' @description 
-#' The package?packagename functionality is dropped in favor of concise
-#' type checking. The ? occupies valuable real estate on the keyboard, and is
-#' given high operator precedence in R. It can then be used to make chain actions
-#' that make code concise yet humanly readable.
+#' \code{?} is a concise interface to query documentation, control flow, type conversion and type check
+#' operations.
+#' 
+#' @usage \special{? topic}
+#' @usage \special{test ? yes ~ no}
+#' @usage \special{x ? type}
+#' @usage \special{x ?~ type}
+#' @usage \special{x ?~ type [\dots]}
+#' 
+#' @param topic a topic for which help is sought, usually a name or string.
+#' 
+#' @param test a \emph{query}, an object which can be coerced to logical mode.
+#' @param yes value(s) if query is \code{TRUE}.
+#' @param no value(s) if query is \code{FALSE}.
+#' 
+#' @param x a \emph{query}, can be a name, logical, 
+#' @param type an abbreviated class to check for transform \code{\var{x}} into.
+#' @param \dots passing optional arguments to further functions.
+#' @return \code{NULL} if documentation, a Boolean if type check.
 #' 
 #' @details 
-#' Base R has as of version 4.2 introuced a hard error for supplying a vector to
-#'a regular if-statement. In \code{ergo} this is instead evaluated as an \code{ifelse}
-#' @param ... conditions
+#' \code{ergo::`?`} re-purposes the second argument of the binary operator \code{?}.
+#' \describe{
+#' \item{\bold{Find documentation:} &emsp;\code{?\var{x}}}{
+#'      A shortcut to a \bold{unary} call of \code{\link[utils:help]{utils::help()}}.
+#'      The binary second argument \code{type?topic} is dropped. Use \code{
+#'      utils::`?`(\var{type}, \var{topic)}} to find S4 method documentation.
+#'      Other than type?pkg (help binary functionality) regular semantics apply.
+#' }
+#' \item{\bold{Execute control flow:} &emsp; \code{\var{test} ? \var{yes} ~ 
+#' \var{no}} &emsp; and &emsp; \code{\var{x} ? \var{type}} - }{
+#'       This uses \code{if(test) x else y} if the query is length 1, and 
+#'       \code{ifelse(test, x, y)} otherwise. If \code{yes} or \code{no} are too
+#'       short, their elements are recycled.
+#' }
+#' \item{\bold{Type checks and conversion:} &emsp;\code{\var{x} ?
+#'  \var{type}} &emsp; and &emsp; \code{\var{x} ?~ \var{type}}}{
+#'       Using the formula interface functions may be applied to the LHS of
+#'       \code{?}. Function arguments can be passed on using \code{[\dots]}
+#' }
+#' }
 #' 
-#' @export
-#' @return If conditional input, a vector or scalar. If help is sought, silent.
+#' @section Operator precedence:
+#' \code{?} has the lowest operator precedence in R, different from that of
+#' infix operators. \code{1>0 ? 'a'~'b'} gives \code{"a"}, but \code{x = 1>0 ?
+#' 'a' ~ 'b'} assigns \code{TRUE} to \code{x}. Thus it is recommended to use
+#' parentheses for operations.
+#' 
+#' For the full list of operator precedence see \link[base:Syntax]{base::Syntax()}.
+#' 
 #' @examples 
-#' \dontrun{
 #' x = as.character(1:5)
 #' # is x a character vector?
 #' x ? chr
@@ -38,60 +69,65 @@
 #' # old: 'if(is.character(x)) as.integer(x) else x
 #' if(x?chr) (x?~int) else x
 #' 
-#' # base R throws an error
+#' \dontrun{
+#' # base R throws an error for if-statement on RHS in pipe
 #' 1:4 |> if(sum() > 10) 10 else 5
-#' 
+#' }
 #' 1:4 |> sum() > 10 ? 10 ~ 5
 #' 
 #' # passing arguments by \code{expr[...]}
-#' e <- list(first = "a", second = F) |> list2env()
+#' e <- list(first = "a", second = FALSE) |> list2env()
 #' as.list(e) ; as.list(e, sorted = TRUE)
 #' e ?~ lst[sorted = TRUE]
-#' }
+#' 
+#' # the ? operator can be used in the RHS of a pipe
+#' (1:5 > 3) |> sum() > 3 ? 100 ~ 200
+#' @seealso
+#' \code{link[utils:help]{utils::help}} to help find documentation.
+#' \code{link[base:ifelse]{base::ifelse}} and \code{link[base:Control]{base::Control}}
+#' for details on base R control flow.
+#' @export
 `?` <- function(...){
   switch(...length(),
-         `?_help`(...), # regular help for unary ?
+         `?_help`(...), # ?sum
          switch(length(..2),
-                type_check(...), # no ..2 or no formula 5 ? 3
-                type_convert(...), # ..2 starts with formula 5 ? ~ 3
-                control_flow(...), # formula in body 5 ? 3 ~ 5, nested 5 ~ 3
+                type_check(...), # 5 ? chr
+                type_convert(...), # 5 ? ~ chr
+                control_flow(...), # TRUE ? 3 ~ 5
                 e("?", "Unsupported format")
          ),
          e("?", "Unsupported format")
   )
 }
+### TODO: check sys.call() when assigned, use <<- ?
 
-control_flow <- function(query, ...){
-  #browser()
-  if(length(query) > 1L){
-    do.call("ifelse", list(query, ..1[[2]], ..1[[3]]), envir = parent.frame(2))
+control_flow <- function(query, do) {
+  if(length(query) > 1L) {
+    do.call("ifelse", list(query, do[[2L]], do[[3L]]), envir = parent.frame(2))
   } else {
-    eval.parent(if(query) ..1[[2]] else ..1[[3]])
+    eval.parent(if(query) do[[2L]] else do[[3L]])
   }
 }
 
-type_check <- function(...){
-  #browser()
-  y <- as.character(substitute(...())[[2]])
-  do.call(paste0("is.", full(y), collapse = ""), list(..1)) 
+type_check <- function(...) {
+  # TODO insert length check for ifelse NA coercion
+  y <- as.character(substitute(...())[[2L]])
+  y <- get_function(y, "is.")
+  do.call(y, list(..1))
 }
 
-type_convert <- function(...){
-  #browser()
-  #return(.map(..1, ..2))
-  #return(fun(..2[[2]])(..1))
-  # y <- as.character(..2[[2]])
-  if(is.name(..2[[2]])) {
-    y <- as.character(..2[[2]])
-    y <- full(y)
-    y %||% return(1000)
-    do.call(paste0("as.", y, collapse = ""), list(..1))
-  } else {
-    l <- as.list(..2[[2]])
-    y <- as.character(l[[2]])
-    y <- full(y)
-    y %||% return(1000)
-    do.call(paste0("as.", y, collapse = ""), c(..1, l[-c(1,2)]))
+type_convert <- function(...) {
+  l <- ..2[[2L]]
+  if(is.name(l)) {
+    y <- as.character(l)
+    y <- get_function(y, "as.")
+    do.call(y, list(..1))
+  } else { # is.call
+    y <- as.character(l[[2L]])
+    y <- get_function(y, "as.")
+    l[[1L]] <- NULL
+    l[[1L]] <- NULL
+    do.call(y, c(list(..1), l))
   }
 }
 
@@ -211,3 +247,39 @@ sig_from_call <- function (fdef, expr, envir, doEval = TRUE) {
   }
   sigClasses
 }
+
+#' Make abbreviations into full nouns.
+#' 
+#' @param x string from formula in `?`
+#' @param ... dots
+#' @keywords internal
+get_function <- function(fun, prepend) {
+  paste0(prepend,
+         switch(fun,
+                chr = "character", num = "numeric", int = "integer", 
+                lst = "list", dfr = "data.frame", mtx = "matrix",
+                lgl = "logical", fac = "factor", cmp = "complex",
+                exp = "expression", arr = "array", env = "environment",
+                fun = "function", fml = "formula",
+                # ..., # Dynamic load library
+                return(fun)) # call function on query
+  )
+}
+# full2 <- function(x, ...) {
+#   #s = endsWith(x, ")")
+#   out <- switch(x,
+#    # if(s) stringi::stri_extract(x, regex = ".+?(?=\\()") else x,
+#     chr = "as.character", num = "as.numeric", int = "as.integer", 
+#     lst = "as.list", dfr = "as.data.frame", mtx = "as.matrix",
+#     lgl = "as.logical", fac = "as.factor", cmp = "as.complex",
+#     exp = "as.expression", arr = "as.array", env = "as.environment",
+#     fun = "as.function", fml = "as.formula",
+#     ..., # Dynamic load library
+#     x)
+#   #if(!s) out else {
+#    # stringi::stri_replace_all_regex(x,
+#     #                                c(".+?(?=\\()", "((?<=\\().*(?=\\)))"),
+#      #                               c(out, "..1, $1"), FALSE)
+#   #}
+# }
+

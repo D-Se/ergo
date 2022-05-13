@@ -35,6 +35,7 @@ lgl <- function(length = 0) {
 #' 
 #' @inheritParams base::list
 #' @param names a character vector of list element names
+#' @importFrom stats setNames
 #' @export
 lst <- function(..., names = NULL) {
   list(...) |> setNames(names)

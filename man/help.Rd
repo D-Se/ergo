@@ -2,28 +2,73 @@
 % Please edit documentation in R/operator.R
 \name{?}
 \alias{?}
-\title{binary ? can now used for type checking in control flow}
+\title{Query operator \code{?}}
 \usage{
-`?`(...)
+\special{? topic}
+
+\special{test ? yes ~ no}
+
+\special{x ? type}
+
+\special{x ?~ type}
+
+\special{x ?~ type [\dots]}
 }
 \arguments{
-\item{...}{conditions}
+\item{\dots}{passing optional arguments to further functions.}
+
+\item{topic}{a topic for which help is sought, usually a name or string.}
+
+\item{test}{a \emph{query}, an object which can be coerced to logical mode.}
+
+\item{yes}{value(s) if query is \code{TRUE}.}
+
+\item{no}{value(s) if query is \code{FALSE}.}
+
+\item{x}{a \emph{query}, can be a name, logical,}
+
+\item{type}{an abbreviated class to check for transform \code{\var{x}} into.}
 }
 \value{
-If conditional input, a vector or scalar. If help is sought, silent.
+\code{NULL} if documentation, a Boolean if type check.
 }
 \description{
-The package?packagename functionality is dropped in favor of concise
-type checking. The ? occupies valuable real estate on the keyboard, and is
-given high operator precedence in R. It can then be used to make chain actions
-that make code concise yet humanly readable.
+\code{?} is a concise interface to query documentation, control flow, type conversion and type check
+operations.
 }
 \details{
-Base R has as of version 4.2 introuced a hard error for supplying a vector to
-a regular if-statement. In \code{ergo} this is instead evaluated as an \code{ifelse}
+\code{ergo::`?`} re-purposes the second argument of the binary operator \code{?}.
+\describe{
+\item{\bold{Find documentation:}  \code{?\var{x}}}{
+A shortcut to a \bold{unary} call of \code{\link[utils:help]{utils::help()}}.
+The binary second argument \code{type?topic} is dropped. Use \code{
+     utils::`?`(\var{type}, \var{topic)}} to find S4 method documentation.
+Other than type?pkg (help binary functionality) regular semantics apply.
 }
+\item{\bold{Execute control flow:}   \code{\var{test} ? \var{yes} ~ 
+\var{no}}   and   \code{\var{x} ? \var{type}} - }{
+This uses \code{if(test) x else y} if the query is length 1, and
+\code{ifelse(test, x, y)} otherwise. If \code{yes} or \code{no} are too
+short, their elements are recycled.
+}
+\item{\bold{Type checks and conversion:}  \code{\var{x} ?
+ \var{type}}   and   \code{\var{x} ?~ \var{type}}}{
+Using the formula interface functions may be applied to the LHS of
+\code{?}. Function arguments can be passed on using \code{[\dots]}
+}
+}
+}
+\section{Operator precedence}{
+
+\code{?} has the lowest operator precedence in R, different from that of
+infix operators. \code{1>0 ? 'a'~'b'} gives \code{"a"}, but \code{x = 1>0 ?
+'a' ~ 'b'} assigns \code{TRUE} to \code{x}. Thus it is recommended to use
+parentheses for operations.
+
+For the full list of operator precedence see \link[base:Syntax]{base::Syntax()}.
+}
+
 \examples{
-\dontrun{
 x = as.character(1:5)
 # is x a character vector?
 x ? chr
@@ -31,14 +76,22 @@ x ? chr
 # old: 'if(is.character(x)) as.integer(x) else x
 if(x?chr) (x?~int) else x
 
-# base R throws an error
+\dontrun{
+# base R throws an error for if-statement on RHS in pipe
 1:4 |> if(sum() > 10) 10 else 5
-
+}
 1:4 |> sum() > 10 ? 10 ~ 5
 
 # passing arguments by \code{expr[...]}
-e <- list(first = "a", second = F) |> list2env()
+e <- list(first = "a", second = FALSE) |> list2env()
 as.list(e) ; as.list(e, sorted = TRUE)
 e ?~ lst[sorted = TRUE]
+
+# the ? operator can be used in the RHS of a pipe
+(1:5 > 3) |> sum() > 3 ? 100 ~ 200
 }
+\seealso{
+\code{link[utils:help]{utils::help}} to help find documentation.
+\code{link[base:ifelse]{base::ifelse}} and \code{link[base:Control]{base::Control}}
+for details on base R control flow.
 }

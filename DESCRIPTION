@@ -23,7 +23,6 @@ Suggests:
     vroom
 Imports: 
     utils,
-    stringi,
     methods
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)

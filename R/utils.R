@@ -1,30 +1,3 @@
-#' Make abbreviations into full nouns.
-#' 
-#' @param x string from formula in `?`
-#' @param ... dots
-#' @keywords internal
-full <- function(x, ...) {
-  s = endsWith(x, ")")
-  out <- switch(
-    if(s) stringi::stri_extract(x, regex = ".+?(?=\\()") else x,
-    chr = "character", num = "numeric", int = "integer", 
-    lst = "list", dfr = "data.frame", mtx = "matrix",
-    lgl = "logical", fac = "factor", cmp = "complex",
-    exp = "expression", arr = "array", env = "environment",
-    fun = "function", fml = "formula",
-    ..., # Dynamic load library
-    default = return())
-  if(!s) out else {
-    stringi::stri_replace_all_regex(x,
-      c(".+?(?=\\()", "((?<=\\().*(?=\\)))"),
-      c(out, "..1, $1"), FALSE)
-  }
-}
-
-#' null-coaslecing operator
-#' @keywords internal
-"%||%" <- function(x, y) if(is.null(x)) y else x
-
 # 
 # type_convert <- function(...){
 #   #browser()
@@ -115,11 +88,11 @@ nms <- function(x){
 
 
 # shortcut for tidyverse map
-#' @keywords w internal
-.map <- function (.x, .f, ...) {
-  .f <- purrr::as_mapper(.f, ...)
-  .Call(purrr:::map_impl, environment(), ".x", ".f", "list")
-}
+# #' @keywords w internal
+# .map <- function (.x, .f, ...) {
+#   .f <- purrr::as_mapper(.f, ...)
+#   .Call(purrr:::map_impl, environment(), ".x", ".f", "list")
+# }
 
 # fun <- function(expr) {
 #   function(x = quote(..1), y = quote(..2), ...) eval(expr)

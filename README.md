@@ -16,7 +16,6 @@ At the console, run `r devtools::install_github("D-Se/ergo")`
 - minimize hand travel distance
 - maximize recall
 
-
 ### Control flow
 In natural language an important concept is usually easy to express. `ergo` re-purposes the `?` operator and combines it with R's formula `~` interface to reduce glyphs needed.
 
@@ -24,7 +23,7 @@ In natural language an important concept is usually easy to express. `ergo` re-p
 |:-----------------------------------------:|-----------------------------------------------|:-------------------------------:|
 |           `if(5 > 3) 10 else 5`           | -                                             |         `5 > 3 ? 10 ~ 5`        |
 |          `ifelse(1:5 > 3, 10, 5)`         | `if_else(1:5 > 3, 10, 5)`                     |        `1:5 > 3 ? 10 ~ 5`       |
-| `ifelse(x > 3, 5, ifelse(x > 2, 10, 20))` | `case_when(x > 3 ~ 5, x > 2 ~ 10, TRUE ~ 20)` | `x > 3 ? 5 ~ {x > 2 ? 10 ~ 20}` |
+| `ifelse(x>3, 5, ifelse(x>2, 10, 20))` | `case_when(x>3 ~ 5, x>2 ~ 10, TRUE ~ 20)` | `x>3 ? 5 ~ {x>2 ? 10 ~ 20}` |
 
 ### Type checks
 
@@ -38,4 +37,7 @@ In natural language an important concept is usually easy to express. `ergo` re-p
 |:---------------------------:|:--------------------------:|
 |      `as.numeric("5")`      |        `"5" ?~ num`        |
 | `as.list(e, sorted = TRUE)` | `e ?~ lst [sorted = TRUE]` |
+
+
+
 

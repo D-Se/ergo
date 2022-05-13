@@ -89,3 +89,39 @@ test_that("?-operator throws errors within tidyverse mapper", {
     map_dbl(1:5, ~ {.x + 1 > 5 ? 10 ~ .}), class = "purrr_error_bad_element_vector"
   )
 })
+
+test_that("passing arguments to ?-op works correctly",{
+  l = list(1, 2, list(c = 3, 4))
+  expect_equal(
+    l ?~ lapply [\(.) length(.)],
+    lapply(l, \(.) length(.))
+    )
+  expect_equal(
+    l ?~ unlist [use.names = T],
+    unlist(l, use.names = T)
+  )
+  expect_equal(
+    l ?~ unlist [use.names = F],
+    unlist(l, use.names = F)
+  )
+  expect_equal(
+    l ?~ unlist [use.names = F, recursive = F],
+    unlist(l, recursive = F, use.names = F)
+  )
+  expect_equal(
+    l ?~ unlist [,F],
+    unlist(l,,F)
+  )
+})
+
+test_that("?-op checks types correctly", {
+  x  = 1:3
+  expect_equal(
+    is.character(x), 
+    x ? chr
+  )
+  expect_equal(
+    x ? num,
+    is.numeric(x)
+  )
+})
