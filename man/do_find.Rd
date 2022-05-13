@@ -18,7 +18,8 @@ do_find(x, f, right = FALSE, no_match = NULL)
 \item{right}{a logical indicating whether to proceed from left to
     right (default) or from right to left.}
 
-\item{no_match}{the value to be returned in the case when “no match” (no element satisfying the predicate) is found.}
+\item{no_match}{the value to be returned in the case when “no match”
+(no element satisfying the predicate) is found.}
 }
 \description{
 Find, but humanly readable

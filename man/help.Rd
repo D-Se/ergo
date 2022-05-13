@@ -12,7 +12,7 @@
 
 \special{x ?~ type}
 
-\special{x ?~ type [\dots]}
+\special{x ?~ function [\dots]}
 }
 \arguments{
 \item{\dots}{passing optional arguments to further functions.}
@@ -28,24 +28,27 @@
 \item{x}{a \emph{query}, can be a name, logical,}
 
 \item{type}{an abbreviated class to check for transform \code{\var{x}} into.}
+
+\item{function}{a function name specifying the transformation to apply.}
 }
 \value{
 \code{NULL} if documentation, a Boolean if type check.
 }
 \description{
-\code{?} is a concise interface to query documentation, control flow, type conversion and type check
+\code{?} is a concise interface to query documentation, control flow,
+type conversion and type check
 operations.
 }
 \details{
-\code{ergo::`?`} re-purposes the second argument of the binary operator \code{?}.
+\code{ergo::`?`} adjusts the 2nd argument of the binary operator \code{?}.
 \describe{
 \item{\bold{Find documentation:}  \code{?\var{x}}}{
-A shortcut to a \bold{unary} call of \code{\link[utils:help]{utils::help()}}.
-The binary second argument \code{type?topic} is dropped. Use \code{
+A shortcut to a \bold{unary} call of \code{\link[utils:help]{utils::help
+     ()}}.The binary second argument \code{type?topic} is dropped. Use \code{
      utils::`?`(\var{type}, \var{topic)}} to find S4 method documentation.
 Other than type?pkg (help binary functionality) regular semantics apply.
 }
-\item{\bold{Execute control flow:}   \code{\var{test} ? \var{yes} ~ 
+\item{\bold{Execute control flow:}   \code{\var{test} ? \var{yes} ~
 \var{no}}   and   \code{\var{x} ? \var{type}} - }{
 This uses \code{if(test) x else y} if the query is length 1, and
 \code{ifelse(test, x, y)} otherwise. If \code{yes} or \code{no} are too
@@ -54,7 +57,11 @@ short, their elements are recycled.
 \item{\bold{Type checks and conversion:}  \code{\var{x} ?
  \var{type}}   and   \code{\var{x} ?~ \var{type}}}{
 Using the formula interface functions may be applied to the LHS of
-\code{?}. Function arguments can be passed on using \code{[\dots]}
+\code{?}. Void of formula syntax the query is read as \emph{is LHS of
+class RHS?}. When a formula is included, it is read as \emph{transform
+the LHS using the template on the RHS.} Function arguments can be
+passed by using \code{[\dots]}, names or by position writing square
+brackets. These brackets are not evaluated.
 }
 }
 }
@@ -65,7 +72,8 @@ infix operators. \code{1>0 ? 'a'~'b'} gives \code{"a"}, but \code{x = 1>0 ?
 'a' ~ 'b'} assigns \code{TRUE} to \code{x}. Thus it is recommended to use
 parentheses for operations.
 
-For the full list of operator precedence see \link[base:Syntax]{base::Syntax()}.
+For the full list of operator precedence see \link[base:Syntax]{
+base::Syntax()}.
 }
 
 \examples{
@@ -92,6 +100,7 @@ e ?~ lst[sorted = TRUE]
 }
 \seealso{
 \code{link[utils:help]{utils::help}} to help find documentation.
-\code{link[base:ifelse]{base::ifelse}} and \code{link[base:Control]{base::Control}}
+\code{link[base:ifelse]{base::ifelse}} and \code{link[base:Control]{
+base::Control}}
 for details on base R control flow.
 }

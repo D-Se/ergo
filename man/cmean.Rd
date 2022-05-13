@@ -4,16 +4,13 @@
 \alias{cmean}
 \title{colMeans, but consistent with terminology}
 \usage{
-cmean(x, na.rm = FALSE, dims = 1L)
+cmean(x, na_rm = FALSE, dims = 1L)
 }
 \arguments{
 \item{x}{an array of two or more dimensions, containing numeric,
     complex, integer or logical values, or a numeric data frame.  For
     \code{.colSums()} etc, a numeric, integer or logical matrix (or
     vector of length \code{m * n}).}
-
-\item{na.rm}{logical.  Should missing values (including \code{NaN})
-    be omitted from the calculations?}
 
 \item{dims}{integer: Which dimensions are regarded as \sQuote{rows} or
     \sQuote{columns} to sum over.  For \code{row*}, the sum or mean is

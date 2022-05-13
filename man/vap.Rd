@@ -11,7 +11,7 @@ vap(x, fun, fun_value, ..., use_names = TRUE)
 
 \item{fun}{a function to be applied to each element.}
 
-\item{fun_value}{a (generalized) vector; a template for the return value from fun.}
+\item{fun_value}{a template for the return value from fun.}
 
 \item{...}{optional arguments to \code{FUN}.}
 

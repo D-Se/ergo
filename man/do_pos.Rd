@@ -18,7 +18,8 @@ do_pos(f, x, right = FALSE, no_match = NA_integer_)
 \item{right}{a logical indicating whether to proceed from left to
     right (default) or from right to left.}
 
-\item{no_match}{the value to be returned in the case when “no match” (no element satisfying the predicate) is found.}
+\item{no_match}{the value to be returned in the case when “no match”
+(no element satisfying the predicate) is found.}
 }
 \description{
 Position, but humanly readable

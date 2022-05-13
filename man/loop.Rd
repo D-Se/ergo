@@ -9,9 +9,10 @@ loop(expr, ..., type = "along")
 \arguments{
 \item{expr}{an expression of the body of a loop.}
 
-\item{...}{dynamic dots that include objects necessary for the body of the loop.}
+\item{...}{dynamic dots that include objects for the body of the loop.}
 
-\item{type}{the type of loop to construct. along for a sequence alona vector, row for a sequence along the rows of an object.}
+\item{type}{the type of loop to construct. along for a sequence alona vector,
+row for a sequence along the rows of an object.}
 }
 \description{
 for-loop prototyping

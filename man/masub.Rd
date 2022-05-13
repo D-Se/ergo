@@ -46,7 +46,9 @@ masub(
 \item{fixed}{logical.  If \code{TRUE}, \code{pattern} is a string to be
     matched as is.  Overrides all conflicting arguments.}
 
-\item{use_bytes}{logical. If TRUE the matching is done byte-by-byte rather than character-by-character, and inputs with marked encodings are not converted.}
+\item{use_bytes}{logical. If TRUE the matching is done byte-by-byte rather
+than character-by-character, and inputs with marked encodings are not
+converted.}
 }
 \description{
 gsub but named for consistency

@@ -15,9 +15,13 @@ seed(seed, kind = NULL, normal_kind = NULL, sample_kind = NULL)
     return to the \R default.  See \sQuote{Details} for the
     interpretation of \code{NULL}.}
 
-\item{normal_kind}{character string or NULL. If it is a character string, set the method of Normal generation. Use "default" to return to the R default. NULL makes no change.}
+\item{normal_kind}{character string or NULL. If it is a character string,
+set the method of Normal generation. Use "default" to return to the R
+default. NULL makes no change.}
 
-\item{sample_kind}{character string or NULL. If it is a character string, set the method of discrete uniform generation (used in sample, for instance). Use "default" to return to the R default. NULL makes no change.}
+\item{sample_kind}{character string or NULL. If it is a character string,
+set the method of discrete uniform generation (used in sample, for
+instance). Use "default" to return to the R default. NULL makes no change.}
 }
 \description{
 Setting seed

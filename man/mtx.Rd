@@ -15,7 +15,8 @@ mtx(data = NA, nrow = 1, ncol = 1, by_row = FALSE, dimnames = NULL)
 
 \item{ncol}{the desired number of columns.}
 
-\item{by_row}{logical. If FALSE (the default) the matrix is filled by columns, otherwise the matrix is filled by rows.}
+\item{by_row}{logical. If FALSE (the default) the matrix is filled by
+columns, otherwise the matrix is filled by rows.}
 
 \item{dimnames}{A \code{\link[base]{dimnames}} attribute for the matrix:
     \code{NULL} or a \code{list} of length 2 giving the row and column

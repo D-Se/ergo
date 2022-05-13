@@ -37,7 +37,9 @@ chrsplit(
 
 \item{perl}{logical.  Should Perl-compatible regexps be used?}
 
-\item{use_bytes}{logical. If TRUE the matching is done byte-by-byte rather than character-by-character, and inputs with marked encodings are not converted.}
+\item{use_bytes}{logical. If TRUE the matching is done byte-by-byte rather
+than character-by-character, and inputs with marked encodings are not
+converted.}
 }
 \description{
 strsplit

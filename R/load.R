@@ -1,8 +1,7 @@
 #' abbreviations of common tidyverse nouns for quick prototyping
-#' 
 #'
 #' @keywords internal
-load_tv <- function(){
+load_tv <- function() {
   expression(
     box::use(
       magrittr[`%>%`],

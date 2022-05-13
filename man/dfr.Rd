@@ -18,15 +18,26 @@ dfr(
     \code{tag = value}.  Component names are created based on the tag (if
     present) or the deparsed argument itself.}
 
-\item{row_names}{NULL or a single integer or character string specifying a column to be used as row names, or a character or integer vector giving the row names for the data frame.}
+\item{row_names}{NULL or a single integer or character string specifying a
+column to be used as row names, or a character or integer vector giving
+the row names for the data frame.}
 
-\item{check_rows}{if TRUE then the rows are checked for consistency of length and names.}
+\item{check_rows}{if TRUE then the rows are checked for consistency of
+length and names.}
 
-\item{check_names}{logical. If TRUE then the names of the variables in the data frame are checked to ensure that they are syntactically valid variable names and are not duplicated. If necessary they are adjusted (by make.names) so that they are.}
+\item{check_names}{logical. If TRUE then the names of the variables in the
+data frame are checked to ensure that they are syntactically valid variable
+names and are not duplicated. If necessary they are adjusted (by
+make.names) so that they are.}
 
-\item{fix_empty_names}{logical indicating if arguments which are “unnamed” (in the sense of not being formally called as someName = arg) get an automatically constructed name or rather name "". Needs to be set to FALSE even when check.names is false if "" names should be kept.}
+\item{fix_empty_names}{logical indicating if arguments which are “unnamed”
+(in the sense of not being formally called as someName = arg) get an
+automatically constructed name or rather name "". Needs to be set to FALSE
+even when check.names is false if "" names should be kept.}
 
-\item{strings_as_factors}{logical should character vectors be converted to factors? The ‘factory-fresh’ default has been TRUE previously but has been changed to FALSE for R 4.0.0.}
+\item{strings_as_factors}{logical should character vectors be converted to
+factors? The ‘factory-fresh’ default has been TRUE previously but has been
+changed to FALSE for R 4.0.0.}
 }
 \description{
 data.frame, but with consistent argument formatting.
