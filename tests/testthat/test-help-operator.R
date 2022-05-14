@@ -1,3 +1,5 @@
+box::use(purrr[map_dbl])
+
 #### Equal ####
 test_that("?-op output equals single valid if-statement", {
   expect_equal(
@@ -70,14 +72,12 @@ test_that("?-op converts types passes arguments", {
 
 
 test_that("?-operator is pipe friendly", {
-  # base R pipe does not allow if expression on RHS
+  
   expect_equal(1:5 |> sum() > 10 ? 10 ~ 5, 10)
   expect_equal(1:4 |> sum() > 10 ? 10 ~ 5, 5)
 })
 
 test_that("?-operator substitutes correctly in tidyverse", {
-  # base R pipe does not allow if expression on RHS
-  box::use(purrr[map_dbl])
   expect_equal(
     map_dbl(1:5, ~ {
       .x + 1 > 5 ? 10 ~ 5
@@ -87,7 +87,6 @@ test_that("?-operator substitutes correctly in tidyverse", {
 })
 
 test_that("?-operator throws errors within tidyverse mapper", {
-  box::use(purrr[map_dbl])
   expect_error(
     map_dbl(1:5, ~ {
       .x + 1 > 5 ? 10 ~ .

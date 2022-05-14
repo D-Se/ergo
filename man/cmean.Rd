@@ -12,6 +12,8 @@ cmean(x, na_rm = FALSE, dims = 1L)
     \code{.colSums()} etc, a numeric, integer or logical matrix (or
     vector of length \code{m * n}).}
 
+\item{na_rm}{Boolean. Remove missing values?}
+
 \item{dims}{integer: Which dimensions are regarded as \sQuote{rows} or
     \sQuote{columns} to sum over.  For \code{row*}, the sum or mean is
     over dimensions \code{dims+1, \dots}; for \code{col*} it is over

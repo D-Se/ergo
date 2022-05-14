@@ -43,8 +43,8 @@ operations.
 \code{ergo::`?`} adjusts the 2nd argument of the binary operator \code{?}.
 \describe{
 \item{\bold{Find documentation:}  \code{?\var{x}}}{
-A shortcut to a \bold{unary} call of \code{\link[utils:help]{utils::help
-     ()}}.The binary second argument \code{type?topic} is dropped. Use \code{
+A shortcut to a \bold{unary} call of base R help.
+The binary second argument \code{type?topic} is dropped. Use \code{
      utils::`?`(\var{type}, \var{topic)}} to find S4 method documentation.
 Other than type?pkg (help binary functionality) regular semantics apply.
 }
@@ -99,7 +99,6 @@ e ?~ lst[sorted = TRUE]
 (1:5 > 3) |> sum() > 3 ? 100 ~ 200
 }
 \seealso{
-\code{link[utils:help]{utils::help}} to help find documentation.
 \code{link[base:ifelse]{base::ifelse}} and \code{link[base:Control]{
 base::Control}}
 for details on base R control flow.

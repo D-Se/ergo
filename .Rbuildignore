@@ -4,3 +4,6 @@
 .github
 issues.Rmd
 benchmarks.Rmd
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

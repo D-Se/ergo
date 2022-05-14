@@ -19,6 +19,8 @@ BugReports: https://github.com/D-Se/ergo/issues
 Suggests: 
     box,
     future,
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0),
     vroom
 Imports: 
@@ -26,3 +28,4 @@ Imports:
     methods
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr
