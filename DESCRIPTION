@@ -1,6 +1,6 @@
 Package: ergo
 Type: Package
-Title: Opiniated ergonomics of base R
+Title: Ergonomic R utilities
 Version: 0.0.1
 Date: 2022-02-08
 Authors@R: 
@@ -10,7 +10,7 @@ Authors@R:
              email = "2869830202@qq.com",
              comment = c(ORCID = "0000-0002-4343-5851"))
   )
-Description: Type less.
+Description: Utilities to reduce syntax complexity and cognitive load for R users.
 License: GPL (>= 2)
 Encoding: UTF-8
 RoxygenNote: 7.1.2

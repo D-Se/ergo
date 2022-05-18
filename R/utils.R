@@ -31,32 +31,3 @@ lib <- function(...) {
 #'
 #' @export
 clean <- function() rm(list = ls(envir = globalenv()))
-
-#' Get the current working directory
-#'
-#' @export
-here <- function() getwd()
-
-#' Abbreviated duplicated.
-#'
-#' @inheritParams base::duplicated
-#' @export
-dup <- function(x, incomparables = FALSE) {
-  duplicated(x = x, incomparables = incomparables)
-}
-
-#' Abbreviated length
-#'
-#' @inheritParams base::length
-#' @export
-len <- function(x) {
-  length(x)
-}
-
-#' Abbreviated names function
-#'
-#' @inheritParams base::names
-#' @export
-nms <- function(x) {
-  names(x)
-}

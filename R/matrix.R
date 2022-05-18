@@ -16,6 +16,15 @@ rmean <- function(x, na_rm = FALSE, dims = 1L) {
   rowMeans(x = x, na.rm = na_rm, dims = dims)
 }
 
+#' rownames, but consistent with terminology
+#'
+#' @inheritParams base::rownames
+#' @param do_NULL logical. If FALSE and names are NULL, names are created.
+#' @export
+rnms <- function(x, do_NULL = TRUE, prefix = "row") {
+  rownames(x = x, do.NULL = do_NULL, prefix = prefix)
+}
+
 #' cowSums, but consistent with terminology
 #'
 #' @inheritParams base::colSums
@@ -32,15 +41,6 @@ csum <- function(x, na_rm = FALSE, dims = 1L) {
 #' @export
 cmean <- function(x, na_rm = FALSE, dims = 1L) {
   colMeans(x = x, na.rm = na_rm, dims = dims)
-}
-
-#' rownames, but consistent with terminology
-#'
-#' @inheritParams base::rownames
-#' @param do_NULL logical. If FALSE and names are NULL, names are created.
-#' @export
-rnms <- function(x, do_NULL = TRUE, prefix = "row") {
-  rownames(x = x, do.NULL = do_NULL, prefix = prefix)
 }
 
 #' colnames, but consistent with terminology

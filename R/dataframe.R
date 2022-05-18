@@ -17,21 +17,3 @@ rlen <- function(x) {
       })
   df
 }
-
-#' rapid tidyverse prototyping
-#'
-#' @param expr an expression.
-#'
-#' @export
-#' @examples
-#' \dontrun{
-#' iris %>%
-#'   m(n = 1:n()) %>%
-#'   f(Sepal.Length > 5) |>
-#'   tv()
-#' }
-tv <- function(expr) {
-  eval(load_tv()) # load package abbreviations
-  expr <- paste0("{", deparse1(substitute(expr)), "}", collapse = "")
-  eval(str2expression(expr))
-}
